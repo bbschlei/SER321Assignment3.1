@@ -80,7 +80,7 @@ class SockClient {
             System.out.println("Do you want to count a specific character? (yes/no)");
             String countChoice = scanner.nextLine();
 
-            json.put("type", "charCount");
+            json.put("type", "charcount");
             json.put("count", countString);
 
             if (countChoice.equalsIgnoreCase("yes")) {
