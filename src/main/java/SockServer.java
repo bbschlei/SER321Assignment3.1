@@ -228,8 +228,8 @@ public class SockServer {
     JSONObject res = new JSONObject();
     try {
       String text = req.getString("count");  // Extract text to be searched.
-      boolean findchar = req.getBoolean("findchar");  // Determine whether to search for a specific character.
-      if (findchar) {
+      boolean findChar = req.getBoolean("findchar");  // Determine whether to search for a specific character.
+      if (findChar) {
         String find = req.getString("find");
         if (find.length() != 1) {
           throw new JSONException("Find must be a single character.");  // Ensure only one character is searched.
