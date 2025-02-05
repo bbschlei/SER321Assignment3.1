@@ -90,8 +90,8 @@ public class SockServer {
             res = add(req);
           } else if (req.getString("type").equals("addmany")) {
             res = addmany(req);
-          } else if (req.getString("type").equals("charCount")) {
-            res = charCount(req);  // Added line
+          } else if (req.getString("type").equals("charcount")) {
+            res = charcount(req);  // Added line
           } else if (req.getString("type").equals("inventory")) {
             res = inventory(req);  // Added this line
           } else {
@@ -224,7 +224,7 @@ public class SockServer {
     return res;
   }
 
-  static JSONObject charCount(JSONObject req) {
+  static JSONObject charcount(JSONObject req) {
     JSONObject res = new JSONObject();
     try {
       String text = req.getString("count");  // Extract text to be searched.
@@ -235,10 +235,10 @@ public class SockServer {
           throw new JSONException("Find must be a single character.");  // Ensure only one character is searched.
         }
         char target = find.charAt(0);  // Get the character to find.
-        long charCount = text.chars().filter(c -> c == target).count();  // Count occurrences of the character.
+        long charcount = text.chars().filter(c -> c == target).count();  // Count occurrences of the character.
         res.put("ok", true);
         res.put("type", "charcount");
-        res.put("result", charCount);  // Return count of the specific character.
+        res.put("result", charcount);  // Return count of the specific character.
       } else {
         res.put("ok", true);
         res.put("type", "charcount");

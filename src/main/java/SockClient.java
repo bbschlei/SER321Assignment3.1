@@ -35,7 +35,7 @@ class SockClient {
       System.out.println("Client connected to server.");
       boolean requesting = true;
       while (requesting) {
-        System.out.println("What would you like to do: 1 - echo, 2 - add, 3 - addmany, 4 - charCount, 5 - inventory (0 to quit)");
+        System.out.println("What would you like to do: 1 - echo, 2 - add, 3 - addmany, 4 - charcount, 5 - inventory (0 to quit)");
         Scanner scanner = new Scanner(System.in);
         int choice = Integer.parseInt(scanner.nextLine());
         // You can assume the user put in a correct input, you do not need to handle errors here
@@ -147,7 +147,7 @@ class SockClient {
             System.out.println(res.getString("echo"));
           } else if (type.equals("add") || type.equals("addmany")) {
             System.out.println("Result: " + res.getInt("result"));
-          } else if (type.equals("charCount")) {
+          } else if (type.equals("charcount")) {
             System.out.println("Character count: " + res.getInt("result"));
           } else if (type.equals("inventory")) {
             if (res.has("inventory")) {  // Check if inventory list is present in the response
