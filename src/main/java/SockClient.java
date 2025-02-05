@@ -74,7 +74,57 @@ class SockClient {
             json.put("type", "addmany");
             json.put("nums", array);
             break;
-            // TODO: add the other cases
+          case 4:
+            System.out.println("Enter the string for character counting:");
+            String countString = scanner.nextLine();
+            System.out.println("Do you want to count a specific character? (yes/no)");
+            String countChoice = scanner.nextLine();
+
+            json.put("type", "charCount");
+            json.put("count", countString);
+
+            if (countChoice.equalsIgnoreCase("yes")) {
+              System.out.println("Which character do you want to count?");
+              String charToCount = scanner.nextLine();
+              json.put("findchar", true);
+              json.put("find", charToCount);
+            } else {
+              json.put("findchar", false);
+            }
+            break;
+          case 5:
+            System.out.println("Choose inventory option: 1 - Add, 2 - View, 3 - Buy");
+            int inventoryChoice = Integer.parseInt(scanner.nextLine());
+            switch (inventoryChoice) {
+              case 1:
+                System.out.println("Enter product name:");
+                String productName = scanner.nextLine();
+                System.out.println("Enter quantity to add:");
+                int quantityToAdd = Integer.parseInt(scanner.nextLine());
+                json.put("type", "inventory");
+                json.put("task", "add");
+                json.put("productName", productName);
+                json.put("quantity", quantityToAdd);
+                break;
+              case 2:
+                json.put("type", "inventory");
+                json.put("task", "view");
+                break;
+              case 3:
+                System.out.println("Enter product name to buy:");
+                String productToBuy = scanner.nextLine();
+                System.out.println("Enter quantity to buy:");
+                int quantityToBuy = Integer.parseInt(scanner.nextLine());
+                json.put("type", "inventory");
+                json.put("task", "buy");
+                json.put("productName", productToBuy);
+                json.put("quantity", quantityToBuy);
+                break;
+              default:
+                System.out.println("Invalid inventory option.");
+                continue;
+            }
+            break;
         }
         if(!requesting) {
           continue;
@@ -91,14 +141,28 @@ class SockClient {
         String i = (String) in.readUTF();
         JSONObject res = new JSONObject(i);
         System.out.println("Got response: " + res);
-        if (res.getBoolean("ok")){
-          if (res.getString("type").equals("echo")) {
+        if (res.getBoolean("ok")) {
+          String type = res.getString("type");
+          if (type.equals("echo")) {
             System.out.println(res.getString("echo"));
-          } else {
-            System.out.println(res.getInt("result"));
+          } else if (type.equals("add") || type.equals("addmany")) {
+            System.out.println("Result: " + res.getInt("result"));
+          } else if (type.equals("charCount")) {
+            System.out.println("Character count: " + res.getInt("result"));
+          } else if (type.equals("inventory")) {
+            if (res.has("inventory")) {  // Check if inventory list is present in the response
+              System.out.println("Current inventory:");
+              JSONArray inventoryItems = res.getJSONArray("inventory");
+              for (int k = 0; k < inventoryItems.length(); k++) {
+                JSONObject item = inventoryItems.getJSONObject(k);
+                System.out.println(item.getString("product") + ": " + item.getInt("quantity"));
+              }
+            } else {
+              System.out.println("Inventory operation completed successfully.");
+            }
           }
         } else {
-          System.out.println(res.getString("message"));
+          System.out.println("Error: " + res.getString("message"));
         }
       }
       // want to keep requesting services so don't close connection
